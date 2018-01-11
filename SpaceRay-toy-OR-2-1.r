@@ -25,3 +25,6 @@ get.objective(toy)
 get.variables(toy)
 #Plot a graph
 plot(toy)
+
+#Sensitivity
+get.sensitivity.rhs(toy)
