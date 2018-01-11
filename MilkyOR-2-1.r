@@ -28,3 +28,6 @@ get.objective(air)
 get.variables(air)
 #Plot a graph
 plot(air)
+
+#Sensitivity
+get.sensitivity.rhs(air)
