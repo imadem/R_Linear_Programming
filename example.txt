@@ -1,0 +1,101 @@
+Problem
+
+Suppose a farmer has 75 acres on which to plant two crops: wheat and barley. To produce these crops, it costs the farmer (for seed, fertilizer, etc.) $120 per acre for the wheat and $210 per acre for the barley. The farmer has $15000 available for expenses. But after the harvest, the farmer must store the crops while awaiting favourable market conditions. The farmer has storage space for 4000 bushels. Each acre yields an average of 110 bushels of wheat or 30 bushels of barley. If the net profit per bushel of wheat (after all expenses have been subtracted) is $1.30 and for barley is $2.00, how should the farmer plant the 75 acres to maximize profit?
+Mathematical definition
+
+Also copied from the above:
+
+maximize
+    P = (110)(1.30)x + (30)(2.00)y = 143x + 60y
+subject to
+    120x + 210y <= 15000
+    110x + 30y <= 4000
+    x + y <= 75
+    x >= 0
+    y >= 0
+
+To reference this again, we have this as the generic mathematical formulation:
+
+- A linear function to be maximized or minimized
+    maximize c1 x1 + c2 x2
+- Problem constraints of the following form
+    a11 x1 + a12 x2 <= b1
+    a21 x1 + a22 x2 <= b2
+    a31 x1 + a32 x2 <= b3
+- Default lower bounds of zero on all variables
+
+Matching to our problem, we have:
+
+- A linear function to be maximized or minimized
+    P = (110)(1.30)x + (30)(2.00)y = 143x + 60y
+        c1 = 143
+        c2 = 60
+- Problem constraints of the following form
+    120x + 210y <= 15000
+         a11 = 120
+         a12 = 210
+         b1  = 15000
+    110x + 30y <= 4000
+         a21 = 110
+         a22 = 30
+         b2  = 4000
+    x + y <= 75
+         a31 = 1
+         a32 = 1
+         b3  = 75
+- Default lower bounds of zero on all variables
+    x >= 0
+    y >= 0
+
+Note that lpsolve by default includes the last condition (i.e. all variables non-negative).
+Using R to solve
+
+See this for more details.
+
+    Install lpsolve library
+
+> install.packages("lpSolveAPI")
+
+    Load lpsolve library
+
+> library("lpSolveAPI")
+
+    Represent our problem
+
+> lprec <- make.lp(0, 2)
+> lp.control(lprec, sense="max")
+> set.objfn(lprec, c(143, 60))
+> add.constraint(lprec, c(120, 210), "<=", 15000)
+> add.constraint(lprec, c(110, 30), "<=", 4000)
+> add.constraint(lprec, c(1, 1), "<=", 75)
+
+    Display the lpsolve matrix
+
+> lprec
+Model name: 
+            C1    C2           
+Maximize   143    60           
+R1         120   210  <=  15000
+R2         110    30  <=   4000
+R3           1     1  <=     75
+Kind       Std   Std           
+Type      Real  Real           
+Upper      Inf   Inf           
+Lower        0     0           
+
+    Solve
+
+> solve(lprec)
+[1] 0
+
+    Get maximum profit
+
+> get.objective(lprec)
+[1] 6315.625
+
+    Get the solution
+
+> get.variables(lprec)
+[1] 21.875 53.125
+
+Thus, to achieve the maximum profit ($6315.625), the farmer should plant 21.875 acres of wheat and 53.125 acres of barley.
