@@ -23,8 +23,5 @@ solve(air)
 # decision variable values with get.objective and get.variables:
 get.objective(air)
 get.variables(air)
+#Plot a graph
 plot(air)
-
-
-
-AirlineSimple
