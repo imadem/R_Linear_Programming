@@ -11,8 +11,11 @@ set.column(air, 2, c(4, 2, 1, 1))
 set.constr.type(air, c("<=","<=","<=" ,"<="))
 set.rhs(air, c(24,6,1, 2))
 
-#Objective Coefficient
+#Objective Coefficients c(5,4)
 set.objfn(air, c(5,4))
+
+# The default setting is minimize for the objective, so we need to 
+# tell R that we are maximizing our objective:
 lp.control(air,sense='max')
 # If we want to take a look at our model, we can just type:
 air
